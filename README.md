@@ -1,5 +1,9 @@
 # 🧠 Episodai: Sovereign Cognitive Graph & Memory Engine for AI Agents
 
+[![Created by: Lalith Alpuri](https://img.shields.io/badge/Author-Lalith%20Alpuri-blue.svg)](https://github.com/lalithbuilds)
+[![Ecosystem: ALPURIS OS](https://img.shields.io/badge/Ecosystem-ALPURIS%20OS-cyan.svg)](https://github.com/lalithbuilds/alpuris-os)
+
+
 <p align="center">
   <a href="https://github.com/lalithbuilds/episodai"><img src="https://img.shields.io/badge/python-3.10+-blue.svg" alt="Python 3.10+"></a>
   <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-green.svg" alt="MIT License"></a>
