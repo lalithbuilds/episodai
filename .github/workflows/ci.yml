@@ -34,7 +34,7 @@ jobs:
           pip install pytest pytest-asyncio anyio
           pip install -e '.[all]'
 
-      - name: Run complete test suite (58/58 tests)
+      - name: Run complete test suite (59 tests)
         run: |
           python -m pytest -v tests/
         env:
