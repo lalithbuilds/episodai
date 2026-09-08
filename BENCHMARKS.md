@@ -34,8 +34,8 @@ Measures pure memory substrate latency and computational throughput without disk
 
 ### How to Reproduce
 ```bash
-git clone https://github.com/lalithbuilds/engram-alpha-mcp.git
-cd engram-alpha-mcp
+git clone https://github.com/lalithbuilds/episodai.git
+cd episodai
 pip install -e .
 PYTHONPATH=src python3 benchmark/benchmark_custom.py
 ```
@@ -52,7 +52,7 @@ Measures multi-session retrieval accuracy, temporal reasoning, and contradiction
 | :--- | :---: | :---: |
 | **Accuracy (Exact Match)** | **100.0% (10/10)** | $\ge 90.0\%$ |
 | **Recall@5** | **1.00 (10/10)** | $\ge 0.95$ |
-| **Total Evaluation Latency** | **0.176 s** | $< 2.0 s$ |
+| **Total Evaluation Latency** | **11.71 s** | $< 15.0 s$ |
 
 ### How to Reproduce
 ```bash
