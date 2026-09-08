@@ -419,6 +419,18 @@
   }
   </script>
 
+  <!-- Plausible Analytics -->
+  <script defer data-domain="lalithbuilds.github.io" src="https://plausible.io/js/script.js"></script>
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+  </script>
+
 </head>
 <body>
   <div class="container">
@@ -450,34 +462,34 @@
             <th>Feature</th>
             <th>Cloud SaaS (Mem0 / Pinecone)</th>
             <th>Episodai</th>
-          </tr>
+         </tr>
         </thead>
         <tbody>
-          <tr>
+         <tr>
             <td><strong>Query Latency (p50)</strong></td>
             <td>150ms – 1,090ms (network RTT)</td>
             <td style="color: var(--green); font-weight: 700;">1.21ms (Native Apple AMX)</td>
-          </tr>
-          <tr>
+         </tr>
+         <tr>
             <td><strong>Storage Substrate</strong></td>
             <td>Remote cluster / Docker</td>
             <td><strong>Single SQLite WAL Database</strong></td>
-          </tr>
-          <tr>
+         </tr>
+         <tr>
             <td><strong>Retrieval Fusion</strong></td>
             <td>Vector-only (drifts on code tokens)</td>
             <td><strong>4-Way RRF (Vector + Trigram + Graph + ACT-R)</strong></td>
           </tr>
-          <tr>
+         <tr>
             <td><strong>Data Sovereignty</strong></td>
             <td>Third-party cloud data mining</td>
             <td><strong>100% On-Chip POSIX 0600 Permissions</strong></td>
           </tr>
-          <tr>
+         <tr>
             <td><strong>Obsidian Support</strong></td>
             <td>None</td>
             <td><strong>Native <code>[[wikilinks]]</code> to Knowledge Graph</strong></td>
-          </tr>
+         </tr>
         </tbody>
       </table>
     </div>
@@ -511,7 +523,7 @@
       <h3 style="font-size: 1.1rem; color: var(--accent); margin-top: 1.25rem;">4. Windsurf Editor (~/.codeium/windsurf/mcp_config.json)</h3>
       <pre><code>{
   "mcpServers": {
-    "episoda": {
+    "episodaa": {
       "command": "uvx",
       "args": ["episodai"]
     }
@@ -532,7 +544,7 @@
         </div>
         <div class="feature-item">
           <h3>Bi-Temporal Graph</h3>
-          <p>Recursive SQL CTE traversal over subject-predicate-object triples with valid_from and valid_until timeline anchors.</p>
+          <p>Recursive SQL CTQ traversal over subject-predicate-object triples with valid_from and valid_until timeline anchors.</p>
         </div>
         <div class="feature-item">
           <h3>ACT-R Cognitive Decay</h3>
@@ -547,7 +559,7 @@
       <details style="margin-bottom: 1rem; border-bottom: 1px solid var(--border); padding-bottom: 0.75rem;">
         <summary style="font-weight: 600; cursor: pointer; color: var(--accent);">What is Episodai?</summary>
         <p style="color: var(--muted); margin-top: 0.5rem; font-size: 0.95rem;">
-          Episodai is a sovereign, hardware-accelerated cognitive memory Model Context Protocol (MCP) server for local AI coding agents (Claude Desktop, Cursor, Windsurf, Cline). Authored by <strong>Lalith Chandra (@lalithbuilds)</strong>, it fuses Apple Silicon AMX vector acceleration (1,248,500 vecs/sec), SQLite WAL storage, 4-Way Reciprocal Rank Fusion, bi-temporal knowledge graphs, and native Obsidian vault synchronization.
+          Episodai is a sovereign, hardware-accelerated cognitive memory Model Context Protocol (MCP) server for local AI coding agents (Claude Desktop, Cursor, Windsurf, Cline). Authored by <strong>Lalith Chandra (@lalithbuilds)</strong>, it fuses Apple Silicon AMX vector acceleration (1,248,500 vecs/sec), SQLite WAL storage, 4-Way Reciprocal Rank Fusion (RRF), bi-temporal knowledge graphs, and native Obsidian vault synchronization.
         </p>
       </details>
 
