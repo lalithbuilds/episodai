@@ -192,7 +192,7 @@ Episodai operates across a multi-tier memory architecture designed for sub-milli
 │  │  ├── 2. Lexical Keyword Retrieval (Trigram SQLite FTS5)                               │  │
 │  │  ├── 3. Relational Knowledge Graph Spreading Activation (1-2 Hop Boost)               │  │
 │  │  └── 4. ACT-R Cognitive Power-Law Decay & Spaced Practice Weighting                   │  │
-│  └──────────────────────────────────────────────────────────┬────────────────────────────┘  │
+│  └──────────────────────────────────┬────────────────────────────────────────────────────┘  │
 │                                     │                                                       │
 │  [ HARDWARE ACCELERATION ENGINE ]   │                                                       │
 │  ┌──────────────────────────────────▼────────────────────────────────────────────────────┐  │
@@ -207,7 +207,7 @@ Episodai operates across a multi-tier memory architecture designed for sub-milli
 │  │  ├── nodes: Content, Embedding BLOBs, Categories, Multi-Tenant Namespaces             │  │
 │  │  ├── edges: Bi-Temporal Triples (valid_from, valid_until, superseded_by, weights)     │  │
 │  │  └── nodes_fts: Trigram FTS5 Virtual Table with Automated Mutation Triggers          │  │
-│  └───────────────────────────────────────────────────────────────────────┘  │
+│  └───────────────────────────────────────────────────────────────────────────────────────┘  │
 └─────────────────────────────────────────────────────────────────────────────────────────────┘
 ```
 
