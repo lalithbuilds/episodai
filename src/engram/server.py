@@ -1,3 +1,4 @@
+import os
 """
 Engram Alpha MCP Server (Production-Grade Architecture)
 Features:
@@ -348,7 +349,9 @@ def search_memory(
             except Exception:
                 days_old = 0.0
 
-            decay_multiplier = math.pow(1.0 + (0.1 * days_old), -0.5)
+            # Strict Ebbinghaus / ACT-R Exponential Decay (score * exp(-lambda * t))
+            decay_lambda = float(os.environ.get("ENGRAM_DECAY_LAMBDA", "0.05"))
+            decay_multiplier = math.exp(-decay_lambda * days_old)
             importance_weight = 1.0 + (importance - 5) * 0.05
 
             final_score = rrf_score * decay_multiplier * importance_weight
