@@ -488,6 +488,29 @@ Add to `~/.codeium/windsurf/mcp_config.json`:
 
 ---
 
+## Reproducing Performance Claims
+
+Performance claims in this README should be treated as benchmarked local results, not universal guarantees. They depend on hardware, Python version, optional extras, and dataset size.
+
+Run the benchmark suite locally before quoting numbers in launches, posts, or comparisons:
+
+```bash
+pip install -e ".[all]"
+python benchmark/benchmark_custom.py
+python benchmark/benchmark_longmemeval.py
+episoda benchmark --vectors 25000
+```
+
+When sharing results, include:
+
+- machine and chip family
+- Python version
+- dependency mode: base, local, or all extras
+- vector count and dimensionality
+- p50 or throughput output copied from the benchmark run
+
+Current README benchmark figures are best read as the project author's measured reference baseline. The reproducible proof path is the benchmark command output in your own environment.
+
 ## 📊 Benchmark Summary: Multi-Tier Hardware Performance
 
 Episodai is validated using two benchmark suites:
