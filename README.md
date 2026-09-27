@@ -31,6 +31,12 @@
 
 ---
 
+## Discoverability Keywords
+
+EpisodAI is built for developers searching for **Model Context Protocol memory**, **MCP server for AI agents**, **local-first agent memory**, **persistent memory for Claude Code**, **Cursor AI memory**, **Codex memory**, **Obsidian MCP memory**, **SQLite AI memory**, **hybrid search for agents**, **context engineering**, **LLM memory**, and **episodic memory for coding agents**.
+
+Use EpisodAI when you need a sovereign memory layer that keeps agent context local, queryable, durable, and practical for real coding-agent workflows.
+
 ## ⚡ Why Episodai vs Alternatives?
 
 | Feature | Anthropic `server-memory` | Mem0 / Cloud Vector DBs | **Episodai** |
