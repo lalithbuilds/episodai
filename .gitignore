@@ -10,3 +10,5 @@ dist/
 build/
 *.egg-info/
 :memory:
+test_export.json
+*.json.tmp
