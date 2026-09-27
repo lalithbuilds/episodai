@@ -25,6 +25,12 @@ from .server import (
 )
 from .amx import get_acceleration_tier
 
+
+class EngramThreadingHTTPServer(ThreadingHTTPServer):
+    allow_reuse_address = True
+    request_queue_size = 128
+
+
 def get_openapi_schema(host: str = "http://localhost:8000") -> Dict[str, Any]:
     """Generates an OpenAPI 3.0.0 specification for ChatGPT Custom Actions & Gemini Extensions."""
     return {
@@ -367,7 +373,7 @@ class EngramHTTPHandler(BaseHTTPRequestHandler):
 
 def start_http_gateway(host: str = "0.0.0.0", port: int = 8000):
     """Start the universal Engram Alpha Threaded HTTP & Web Agent Gateway."""
-    server = ThreadingHTTPServer((host, port), EngramHTTPHandler)
+    server = EngramThreadingHTTPServer((host, port), EngramHTTPHandler)
     server.daemon_threads = True
     print("=" * 70)
     print(f"🌐 Engram Alpha Universal Web & REST Gateway Active (Threaded)")
