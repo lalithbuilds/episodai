@@ -1,8 +1,8 @@
 {
   "$schema": "https://raw.githubusercontent.com/modelcontextprotocol/registry/main/schema/server.json",
   "name": "episodai",
-  "title": "Episoda Alpha MCP (Episodai)",
-  "description": "Sovereign local-first episodic memory substrate and MCP server for AI coding agents. Features Apple Silicon AMX vector acceleration (1.2M+ vecs/sec), SQLite WAL, 4-Way RRF, and bi-temporal graphs.",
+  "title": "EpisodAI",
+  "description": "Local AI agent memory MCP server with SQLite persistence, hybrid retrieval, graph memory, and Obsidian workflows.",
   "version": "2.1.0",
   "iconUrl": "https://raw.githubusercontent.com/lalithbuilds/episodai/master/assets/social-card.png",
   "categories": ["memory", "database", "knowledge-graph", "developer-tools"],

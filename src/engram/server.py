@@ -58,7 +58,7 @@ from .amx import (
 )
 from .ingest import ingest_obsidian_vault
 
-mcp = FastMCP("Engram Alpha MCP")
+mcp = FastMCP("EpisodAI")
 
 def escape_fts(text: str) -> str:
     """

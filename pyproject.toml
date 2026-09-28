@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "episodai"
 version = "2.1.0"
-description = "Episoda Alpha MCP: Sovereign Cognitive Graph & Episodic Memory Engine with Hardware AMX & 4-Way RRF"
+description = "EpisodAI: local AI agent memory MCP server with SQLite, hybrid retrieval, and graph workflows"
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
@@ -15,7 +15,6 @@ keywords = [
     "ai-memory",
     "mcp",
     "model-context-protocol",
-    "mcp",
     "mcp-server",
     "cognitive-memory",
     "episodic-memory",

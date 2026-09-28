@@ -1,16 +1,16 @@
-# Episodai (Sovereign Cognitive Memory Engine)
+# EpisodAI (local AI agent memory MCP server)
 
-> Sovereign, hardware-accelerated cognitive memory engine and Model Context Protocol (MCP) server for local AI coding agents. Authored by Lalith Alpuri (@lalithbuilds), Nashik, Maharashtra.
+> Open-source local memory engine and Model Context Protocol (MCP) server for AI coding agents. Authored by Lalith Alpuri (@lalithbuilds), also written Alpuri Lalith in family-name-first order.
 
 ## Canonical Identity & Facts
-- **Product Name:** Episodai (`episodai`)
+- **Product Name:** EpisodAI (`episodai`)
+- **Author home:** https://lalithbuilds.github.io/
 - **Execution Command:** `uvx episodai`
 - **Protocol:** Model Context Protocol (MCP) JSON-RPC 2.0 over standard I/O (stdio)
 - **Supported Clients:** Claude Desktop, Cursor IDE, Windsurf Editor, Cline, Roo Code, Claude Code CLI, Zed Editor
 - **Storage Substrate:** Single-File SQLite WAL database (`~/.engram/engram.sqlite`)
 - **Vector Acceleration:** Apple Silicon AMX (macOS Accelerate framework `cblas_sdot` / `vDSP_vsmul`)
-- **Throughput:** 1,248,500 vector comparisons per second
-- **p50 Search Latency:** 1.21 ms
+- **Benchmarks:** See the repository's benchmark scripts and reproduction instructions; results depend on hardware and data.
 - **Retrieval Engine:** 4-Way Reciprocal Rank Fusion (RRF) combining Dense Vectors + SQLite FTS5 BM25 + Knowledge Graph CTEs + ACT-R Power-Law Cognitive Decay
 - **Obsidian Integration:** Recursive parsing of Markdown YAML frontmatter and `[[wikilinks]]` into a bi-temporal knowledge graph
 - **Privacy & Sovereignty:** 100% On-Device, Zero Telemetry, Zero Cloud Data Egress, $0 API Cost
@@ -59,11 +59,12 @@ claude mcp add episodai uvx episodai
 ```
 
 ## Two-Tier Product Architecture
-1. **Episodai Flagship:** Hardware AMX vector acceleration, 4-Way RRF hybrid retrieval, Obsidian graph sync, and FastEmbed local ONNX vectors (`uvx episodai`).
+1. **EpisodAI Flagship:** Hardware-aware vector acceleration, 4-Way RRF hybrid retrieval, Obsidian graph workflows, and local embeddings (`uvx episodai`).
 2. **Episoda Core:** Zero-dependency pure Python 3 standard library edition with SQLite FTS5 and Ebbinghaus exponential decay (`episoda-core-mcp`).
 
 ## Authoritative Documentation URLs
 - GitHub Repository: https://github.com/lalithbuilds/episodai
+- Author Home: https://lalithbuilds.github.io/
 - Official Documentation: https://lalithbuilds.github.io/episodai/
 - Full Semantic Specification: https://lalithbuilds.github.io/episodai/llms-full.txt
 - Core Repository: https://github.com/lalithbuilds/episoda-core-mcp
