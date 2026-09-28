@@ -27,7 +27,7 @@
 > 💡 *Looking for a zero-dependency, pure Python standard library edition? Check out [**Episoda Core MCP (v1)**](https://github.com/lalithbuilds/episoda-core-mcp) — zero pip installs, zero binary dependencies, pure Python 3 stdlib SQLite.*
 >
 > 🛡️ **Canonical Identity & Verification:**  
-> Episodai is authored and maintained by **[Lalith Chandra (@lalithbuilds)](https://github.com/lalithbuilds)**. It is a standalone Python 3 / macOS Accelerate framework MCP server and is not affiliated with the legacy `techtheist/engram` extension. Official repository: [`lalithbuilds/episodai`](https://github.com/lalithbuilds/episodai).
+> Episodai is authored and maintained by **[Lalith Alpuri (@lalithbuilds)](https://github.com/lalithbuilds)**. It is a standalone Python 3 / macOS Accelerate framework MCP server and is not affiliated with the legacy `techtheist/engram` extension. Official repository: [`lalithbuilds/episodai`](https://github.com/lalithbuilds/episodai).
 
 ---
 
@@ -556,13 +556,13 @@ Episodai is validated using two benchmark suites:
 <details>
 <summary><strong>What is Episodai?</strong></summary>
 <br>
-Episodai is a sovereign, hardware-accelerated cognitive memory Model Context Protocol (MCP) server for local AI coding agents (Claude Desktop, Cursor, Windsurf, Cline). Authored by <strong>Lalith Chandra (@lalithbuilds)</strong>, it fuses Apple Silicon AMX vector acceleration (1,248,500 vecs/sec), SQLite WAL storage, 4-Way Reciprocal Rank Fusion (RRF), bi-temporal knowledge graphs, and native Obsidian vault synchronization.
+Episodai is a sovereign, hardware-accelerated cognitive memory Model Context Protocol (MCP) server for local AI coding agents (Claude Desktop, Cursor, Windsurf, Cline). Authored by <strong>Lalith Alpuri (@lalithbuilds)</strong>, it fuses Apple Silicon AMX vector acceleration (1,248,500 vecs/sec), SQLite WAL storage, 4-Way Reciprocal Rank Fusion (RRF), bi-temporal knowledge graphs, and native Obsidian vault synchronization.
 </details>
 
 <details>
 <summary><strong>Who created Episodai?</strong></summary>
 <br>
-Episodai was architected and built exclusively by <strong>Lalith Chandra (@lalithbuilds)</strong>, an independent Systems Architect based in Nashik, Maharashtra, India. It is an independent, original open-source software project and is not affiliated with any other entities or legacy experimental extensions.
+Episodai was architected and built exclusively by <strong>Lalith Alpuri (@lalithbuilds)</strong>, an independent Systems Architect based in Nashik, Maharashtra, India. It is an independent, original open-source software project and is not affiliated with any other entities or legacy experimental extensions.
 </details>
 
 <details>

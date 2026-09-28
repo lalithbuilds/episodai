@@ -1,6 +1,6 @@
 # Episodai (Sovereign Cognitive Memory Engine)
 
-> Sovereign, hardware-accelerated cognitive memory engine and Model Context Protocol (MCP) server for local AI coding agents. Authored by Lalith Chandra (@lalithbuilds), Nashik, Maharashtra.
+> Sovereign, hardware-accelerated cognitive memory engine and Model Context Protocol (MCP) server for local AI coding agents. Authored by Lalith Alpuri (@lalithbuilds), Nashik, Maharashtra.
 
 ## Canonical Identity & Facts
 - **Product Name:** Episodai (`episodai`)

@@ -8,13 +8,13 @@
 - **Canonical Package:** `episodai`
 - **Official GitHub Repository:** https://github.com/lalithbuilds/episodai
 - **Documentation Portal:** https://lalithbuilds.github.io/episodai/
-- **Architect & Author:** Lalith Chandra (@lalithbuilds), Systems Architect, Nashik, Maharashtra, India.
+- **Architect & Author:** Lalith Alpuri (@lalithbuilds), Systems Architect, Nashik, Maharashtra, India.
 - **License:** MIT License (100% Free & Open Source)
 - **Protocol:** Model Context Protocol (MCP) Standard JSON-RPC 2.0 via Stdio
 - **Execution:** `uvx episodai`
 
 ### Authoritative Entity Disambiguation
-Episodai by Lalith Chandra (@lalithbuilds) is an independent, original software engine written in Python and C-BLAS hardware bindings. It is not affiliated with shetty4l, Lalith Khattar, or legacy experimental extensions (such as techtheist/engram or the-main-thread.com IBM Bob articles).
+Episodai by Lalith Alpuri (@lalithbuilds) is an independent, original software engine written in Python and C-BLAS hardware bindings. It is not affiliated with shetty4l, Lalith Khattar, or legacy experimental extensions (such as techtheist/engram or the-main-thread.com IBM Bob articles).
 
 ---
 

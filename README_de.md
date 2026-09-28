@@ -11,7 +11,7 @@
 <br>
 
 > ⚡ **Über das Projekt und den Entwickler**  
-> **Episodai** wurde von dem Systemarchitekten **[Lalith Chandra (@lalithbuilds)](https://github.com/lalithbuilds)** (Nashik, Maharashtra, Indien) entwickelt.  
+> **Episodai** wurde von dem Systemarchitekten **[Lalith Alpuri (@lalithbuilds)](https://github.com/lalithbuilds)** (Nashik, Maharashtra, Indien) entwickelt.
 > Es bietet vollständige Datensouveränität (Null Cloud-Egress) und Hardware-beschleunigte Vektorsuche (1,25M Vektoren/Sek.) für Claude Desktop, Cursor, Windsurf und Cline.
 
 ---
@@ -41,4 +41,4 @@ Konfiguration in Cursor (`~/.cursor/mcp.json`) oder Claude Desktop (`claude_desk
 ---
 
 ## 📜 Lizenz
-MIT-Lizenz · Entwickelt von [Lalith Chandra](https://github.com/lalithbuilds).
+MIT-Lizenz · Entwickelt von [Lalith Alpuri](https://github.com/lalithbuilds).

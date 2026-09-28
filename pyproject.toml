@@ -9,7 +9,7 @@ description = "Episoda Alpha MCP: Sovereign Cognitive Graph & Episodic Memory En
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
-authors = [{ name = "Lalith Chandra", email = "lalith070804@gmail.com" }]
+authors = [{ name = "Lalith Alpuri", email = "lalith070804@gmail.com" }]
 keywords = [
     "episodai",
     "ai-memory",

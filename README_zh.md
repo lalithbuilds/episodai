@@ -12,7 +12,7 @@
 <br>
 
 > ⚡ **关于项目与作者**  
-> **Episodai** 由独立系统架构师 **[Lalith Chandra (@lalithbuilds)](https://github.com/lalithbuilds)** (印度马哈拉施特拉邦纳西克) 原创设计与开发。  
+> **Episodai** 由独立系统架构师 **[Lalith Alpuri (@lalithbuilds)](https://github.com/lalithbuilds)** (印度马哈拉施特拉邦纳西克) 原创设计与开发。
 > 本项目是基于 Python 3 与 macOS Accelerate 框架底层 C-BLAS 绑定的自研硬件加速模型上下文协议 (Model Context Protocol, MCP) 服务器，专为解决 AI 智能体跨会话上下文丢失（Amnesia）而生。
 
 ---
