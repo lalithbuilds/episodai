@@ -9,7 +9,7 @@
 
 ## Reporting a Vulnerability
 
-Engram Alpha is designed with strict on-chip sovereign guarantees:
+EpisodAI is designed for local operation with the following security measures:
 - SQLite databases are initialized with POSIX `0600` permissions.
 - Zero network telemetry is emitted by the core server.
 

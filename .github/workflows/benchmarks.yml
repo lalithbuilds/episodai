@@ -1,4 +1,4 @@
-name: Episoda Alpha AMX Latency Verification
+name: EpisodAI AMX Latency Verification
 
 on:
   push:

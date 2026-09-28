@@ -1,4 +1,6 @@
-# Engram Alpha MCP — Level-4 Production System Architecture & Design Specification
+# EpisodAI — Architecture and Design Notes
+
+This document includes historical Engram Alpha design terminology. The public product is EpisodAI; `engram` remains the Python package and compatibility command name. Design descriptions below are not substitutes for verified benchmark results or deployment guarantees.
 
 ```
 ┌────────────────────────────────────────────────────────────────────────────────────────┐

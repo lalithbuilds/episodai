@@ -1,4 +1,4 @@
-name: Engram Alpha CI
+name: EpisodAI CI
 
 on:
   push:
