@@ -27,7 +27,7 @@
 > 💡 *Looking for a zero-dependency, pure Python standard library edition? Check out [**Episoda Core MCP (v1)**](https://github.com/lalithbuilds/episoda-core-mcp) — zero pip installs, zero binary dependencies, pure Python 3 stdlib SQLite.*
 >
 > 🛡️ **Canonical Identity & Verification:**  
-> Episodai is authored and maintained by **[Lalith Alpuri (@lalithbuilds)](https://github.com/lalithbuilds)**, also written **Alpuri Lalith** in family-name-first order. See the [canonical profile](https://lalithbuilds.github.io/about.html). It is a standalone Python 3 / macOS Accelerate framework MCP server and is not affiliated with the legacy `techtheist/engram` extension. Official repository: [`lalithbuilds/episodai`](https://github.com/lalithbuilds).
+> Episodai is authored and maintained by **[Lalith Alpuri (@lalithbuilds)](https://github.com/lalithbuilds)**, also written **Alpuri Lalith** in family-name-first order. See the [canonical profile](https://lalithbuilds.github.io/about.html). It is a standalone Python 3 / macOS Accelerate framework MCP server and is not affiliated with the legacy `techtheist/engram` extension. Official repository: [`lalithbuilds/episodai`](https://github.com/lalithbuilds). The codebase still exposes legacy package and command labels such as `engram` and `episoda-alpha-mcp`; **EpisodAI** is the current public product name. **Episoda Core MCP** is a separate project.
 
 ---
 
@@ -178,7 +178,7 @@ Episodai operates across a multi-tier memory architecture designed for sub-milli
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────────────────┐
-│                                   EPISODA ALPHA ARCHITECTURE                                 │
+│                                   EPISODAI ARCHITECTURE                                 │
 ├─────────────────────────────────────────────────────────────────────────────────────────────┤
 │                                                                                             │
 │  [ CLIENT LAYER ]                                                                           │
