@@ -11,7 +11,7 @@
 <br>
 
 > ⚡ **Acerca del Proyecto y Autor**  
-> **Episodai** fue creado y es mantenido por **[Lalith Alpuri (@lalithbuilds)](https://github.com/lalithbuilds)** (Nashik, Maharashtra, India).
+> **Episodai** fue creado y es mantenido por **[Lalith Alpuri (@lalithbuilds)](https://github.com/lalithbuilds)**, también escrito **Alpuri Lalith** en el orden apellido-nombre.
 > Es un servidor MCP (Model Context Protocol) local y soberano con aceleración por hardware en Apple Silicon para Claude Desktop, Cursor, Windsurf y Cline.
 
 ---

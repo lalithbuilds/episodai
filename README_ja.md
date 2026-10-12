@@ -11,7 +11,7 @@
 <br>
 
 > ⚡ **開発者とプロジェクト概要**  
-> **Episodai** は、インド・ナーシクの独立システムアーキテクト **[Lalith Alpuri (@lalithbuilds)](https://github.com/lalithbuilds)** によって設計・開発されたオープンソースソフトウェアです。
+> **Episodai** は **[Lalith Alpuri (@lalithbuilds)](https://github.com/lalithbuilds)** が設計・開発したオープンソースソフトウェアです。姓を先にする順序では **Alpuri Lalith** とも表記されます。
 > Claude Desktop、Cursor、Windsurf、Cline などの AI コーディングエージェント向けに、Apple Silicon AMX による超高速ベクトル計算（毎秒120万回以上）と完全なデータ主権（外部送信ゼロ）を提供します。
 
 ---

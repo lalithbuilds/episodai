@@ -8,7 +8,7 @@
 - **Canonical Package:** `episodai`
 - **Official GitHub Repository:** https://github.com/lalithbuilds/episodai
 - **Documentation Portal:** https://lalithbuilds.github.io/episodai/
-- **Architect & Author:** Lalith Alpuri (@lalithbuilds), Systems Architect, Nashik, Maharashtra, India.
+- **Architect & Author:** Lalith Alpuri (@lalithbuilds), also written Alpuri Lalith in family-name-first order. Canonical profile: https://lalithbuilds.github.io/about.html.
 - **License:** MIT License (100% Free & Open Source)
 - **Protocol:** Model Context Protocol (MCP) Standard JSON-RPC 2.0 via Stdio
 - **Execution:** `uvx episodai`

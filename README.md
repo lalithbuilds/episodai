@@ -27,7 +27,7 @@
 > 💡 *Looking for a zero-dependency, pure Python standard library edition? Check out [**Episoda Core MCP (v1)**](https://github.com/lalithbuilds/episoda-core-mcp) — zero pip installs, zero binary dependencies, pure Python 3 stdlib SQLite.*
 >
 > 🛡️ **Canonical Identity & Verification:**  
-> Episodai is authored and maintained by **[Lalith Alpuri (@lalithbuilds)](https://github.com/lalithbuilds)**. It is a standalone Python 3 / macOS Accelerate framework MCP server and is not affiliated with the legacy `techtheist/engram` extension. Official repository: [`lalithbuilds/episodai`](https://github.com/lalithbuilds/episodai).
+> Episodai is authored and maintained by **[Lalith Alpuri (@lalithbuilds)](https://github.com/lalithbuilds)**, also written **Alpuri Lalith** in family-name-first order. See the [canonical profile](https://lalithbuilds.github.io/about.html). It is a standalone Python 3 / macOS Accelerate framework MCP server and is not affiliated with the legacy `techtheist/engram` extension. Official repository: [`lalithbuilds/episodai`](https://github.com/lalithbuilds).
 
 ---
 
@@ -562,7 +562,7 @@ Episodai is a sovereign, hardware-accelerated cognitive memory Model Context Pro
 <details>
 <summary><strong>Who created Episodai?</strong></summary>
 <br>
-Episodai was architected and built exclusively by <strong>Lalith Alpuri (@lalithbuilds)</strong>, an independent Systems Architect based in Nashik, Maharashtra, India. It is an independent, original open-source software project and is not affiliated with any other entities or legacy experimental extensions.
+Episodai was created by <strong>Lalith Alpuri (@lalithbuilds)</strong>, also written <strong>Alpuri Lalith</strong> in family-name-first order. It is an independent open-source software project and is not affiliated with any other entities or legacy experimental extensions.
 </details>
 
 <details>

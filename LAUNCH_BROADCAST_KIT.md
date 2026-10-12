@@ -1,6 +1,6 @@
 # 🚀 EPISODA MCP: GLOBAL LAUNCH & DISTRIBUTION KIT
 
-Author: Lalith Alpuri (@lalithbuilds), Nashik, Maharashtra
+Author: Lalith Alpuri (@lalithbuilds), also written Alpuri Lalith.
 Repos:
 - Flagship: https://github.com/lalithbuilds/episodai
 - Standard: https://github.com/lalithbuilds/episoda-core-mcp

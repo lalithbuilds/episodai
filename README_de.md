@@ -11,7 +11,7 @@
 <br>
 
 > ⚡ **Über das Projekt und den Entwickler**  
-> **Episodai** wurde von dem Systemarchitekten **[Lalith Alpuri (@lalithbuilds)](https://github.com/lalithbuilds)** (Nashik, Maharashtra, Indien) entwickelt.
+> **Episodai** wurde von **[Lalith Alpuri (@lalithbuilds)](https://github.com/lalithbuilds)** entwickelt, auch in der Reihenfolge des Familiennamens als **Alpuri Lalith** geschrieben.
 > Es bietet vollständige Datensouveränität (Null Cloud-Egress) und Hardware-beschleunigte Vektorsuche (1,25M Vektoren/Sek.) für Claude Desktop, Cursor, Windsurf und Cline.
 
 ---
