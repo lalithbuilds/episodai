@@ -9,9 +9,12 @@ Features:
 import sys
 import os
 import json
+import hmac
 import urllib.parse
 from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
 from typing import Dict, Any
+
+from . import __version__
 
 from .server import (
     save_memory,
@@ -38,7 +41,7 @@ def get_openapi_schema(host: str = "http://localhost:8000") -> Dict[str, Any]:
         "info": {
             "title": "Engram Alpha Universal Memory API",
             "description": "Sovereign Cognitive Memory & Knowledge Graph Engine for AI Agents",
-            "version": "2.0.0",
+            "version": __version__,
         },
         "servers": [{"url": host}],
         "paths": {
@@ -168,10 +171,15 @@ DASHBOARD_HTML = """<!DOCTYPE html>
         <span id="tier-badge" style="background:#0284c7; padding:6px 12px; border-radius:20px; font-size:12px;">Connecting...</span>
     </div>
     <div class="card">
+        <h3>🔑 API token</h3>
+        <input type="password" id="api-token" class="search-box" placeholder="Bearer token (required when ENGRAM_API_KEY is set)" autocomplete="off">
+        <button class="btn" onclick="saveToken()">Remember token for this tab</button>
+    </div>
+    <div class="card">
         <h3>🔍 4-Way Semantic Memory Recall</h3>
         <input type="text" id="query-input" class="search-box" placeholder="Search cognitive memory (e.g. SQLite WAL architecture)..." onkeydown="if(event.key==='Enter') doSearch()">
         <button class="btn" onclick="doSearch()">Search Memories</button>
-        <div id="search-output" style="margin-top:15px;"></div>
+        <pre id="search-output" style="margin-top:15px;"></pre>
     </div>
     <div class="card">
         <h3>🕸️ Knowledge Graph Traversal</h3>
@@ -180,17 +188,33 @@ DASHBOARD_HTML = """<!DOCTYPE html>
         <pre id="graph-output" style="margin-top:15px;"></pre>
     </div>
     <script>
-        fetch('/health').then(r=>r.json()).then(d=>{ document.getElementById('tier-badge').innerText = d.tier; });
+        const TOKEN_KEY = 'engram_api_token';
+        const savedToken = sessionStorage.getItem(TOKEN_KEY) || '';
+        if (savedToken) document.getElementById('api-token').value = savedToken;
+        function saveToken(){
+            const value = document.getElementById('api-token').value.trim();
+            if (value) sessionStorage.setItem(TOKEN_KEY, value);
+            else sessionStorage.removeItem(TOKEN_KEY);
+        }
+        function authHeaders(){
+            const token = (sessionStorage.getItem(TOKEN_KEY) || document.getElementById('api-token').value || '').trim();
+            return token ? {'Authorization': 'Bearer ' + token} : {};
+        }
+        fetch('/health').then(r=>r.json()).then(d=>{ document.getElementById('tier-badge').textContent = d.tier || ''; });
         function doSearch(){
             const q = document.getElementById('query-input').value;
-            fetch('/search?q=' + encodeURIComponent(q)).then(r=>r.json()).then(d=>{
-                document.getElementById('search-output').innerHTML = '<pre>' + (d.results || 'No results found.') + '</pre>';
+            fetch('/search?q=' + encodeURIComponent(q), {headers: authHeaders()}).then(r=>r.json()).then(d=>{
+                document.getElementById('search-output').textContent = d.results || d.error || 'No results found.';
+            }).catch(err=>{
+                document.getElementById('search-output').textContent = String(err);
             });
         }
         function doGraph(){
             const node = document.getElementById('graph-input').value;
-            fetch('/graph?node=' + encodeURIComponent(node)).then(r=>r.json()).then(d=>{
-                document.getElementById('graph-output').innerText = d.graph || 'No edges found.';
+            fetch('/graph?node=' + encodeURIComponent(node), {headers: authHeaders()}).then(r=>r.json()).then(d=>{
+                document.getElementById('graph-output').textContent = d.graph || d.error || 'No edges found.';
+            }).catch(err=>{
+                document.getElementById('graph-output').textContent = String(err);
             });
         }
     </script>
@@ -209,10 +233,14 @@ class EngramHTTPHandler(BaseHTTPRequestHandler):
         if not required_key:
             return True
         auth_header = self.headers.get("Authorization", "")
-        if auth_header.startswith("Bearer "):
-            token = auth_header[7:].strip()
-            return token == required_key
-        return False
+        scheme, _, token = auth_header.partition(" ")
+        if scheme.lower() != "bearer":
+            return False
+        token = token.strip()
+        try:
+            return hmac.compare_digest(token, required_key)
+        except (TypeError, ValueError):
+            return False
 
     def do_OPTIONS(self):
         self.send_response(200)
@@ -371,16 +399,32 @@ class EngramHTTPHandler(BaseHTTPRequestHandler):
     def log_message(self, format, *args):
         pass  # suppress default request logging noise
 
-def start_http_gateway(host: str = "0.0.0.0", port: int = 8000):
+_LOOPBACK_HOSTS = {"127.0.0.1", "localhost", "::1", "[::1]"}
+
+
+def _is_loopback_host(host: str) -> bool:
+    return (host or "").strip().lower() in _LOOPBACK_HOSTS
+
+
+def start_http_gateway(host: str = "127.0.0.1", port: int = 8000):
     """Start the universal Engram Alpha Threaded HTTP & Web Agent Gateway."""
+    if not _is_loopback_host(host) and not os.environ.get("ENGRAM_API_KEY"):
+        raise RuntimeError(
+            "Refusing to listen on non-loopback address "
+            f"{host!r} without ENGRAM_API_KEY. Set ENGRAM_API_KEY or use --host 127.0.0.1."
+        )
     server = EngramThreadingHTTPServer((host, port), EngramHTTPHandler)
     server.daemon_threads = True
+    if os.environ.get("ENGRAM_API_KEY"):
+        auth_status = "Bearer token required"
+    else:
+        auth_status = "Open loopback (set ENGRAM_API_KEY before exposing this port)"
     print("=" * 70)
     print(f"🌐 Engram Alpha Universal Web & REST Gateway Active (Threaded)")
     print(f"📍 Listening on: http://{host}:{port}")
     print(f"📊 Web Dashboard: http://localhost:{port}/dashboard")
     print(f"📖 OpenAPI 3.0 Specification: http://localhost:{port}/openapi.json")
-    print(f"🔒 Auth Status: {'ENGRAM_API_KEY Active (Protected)' if os.environ.get('ENGRAM_API_KEY') else 'Open Localhost'}")
+    print(f"🔒 Auth Status: {auth_status}")
     print("=" * 70)
     try:
         server.serve_forever()

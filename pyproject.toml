@@ -51,6 +51,14 @@ all = [
     "onnxruntime>=1.15.0",
     "tokenizers>=0.19.0",
 ]
+# Alias used by the install docs. Same stack as `all`.
+local = [
+    "fastembed>=0.4.0",
+    "sqlite-vec>=0.1.1",
+    "numpy>=1.24.0",
+    "onnxruntime>=1.15.0",
+    "tokenizers>=0.19.0",
+]
 dev = [
     "pytest>=8.0.0",
     "build>=1.0.0",
