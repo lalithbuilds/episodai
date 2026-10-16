@@ -33,7 +33,10 @@ def test_package_version_matches_release():
 
 
 def test_local_extra_matches_documented_install():
-    import tomllib
+    try:
+        import tomllib
+    except ModuleNotFoundError:
+        tomllib = pytest.importorskip("tomli")
 
     data = tomllib.loads(Path("pyproject.toml").read_text(encoding="utf-8"))
     extras = data["project"]["optional-dependencies"]
