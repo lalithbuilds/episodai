@@ -5,7 +5,7 @@ startCommand:
     properties:
       dbPath:
         type: string
-        description: "Optional custom absolute path to SQLite database. Defaults to ~/.episoda/engram.sqlite"
+        description: "Optional custom absolute path to SQLite database. Defaults to ~/.engram/engram_v3.db"
   commandFunction: |-
     (config) => ({
       command: "uvx",
