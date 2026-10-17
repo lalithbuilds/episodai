@@ -50,7 +50,7 @@ This document outlines the critical reality check findings, identified architect
 * **Identified Vulnerability:** The zero-dependency fallback uses MD5 n-gram hypersphere projection. While fast and zero-overhead, it functions as a MinHash-like feature hash without deep cross-lingual or semantic synonym understanding.
 * **Engineering Solution:**
   1. Keep the zero-dependency hypersphere projection as a robust, crash-proof Tier-3 fallback.
-  2. Recommend local ONNX Runtime / `fastembed` (`pip install engram[local]`) for deep neural transformer embeddings (`BAAI/bge-small-en-v1.5`) running 100% on-device on CPU/NPU.
+  2. Recommend local ONNX Runtime / `fastembed` (`pip install 'episodai[local]'`) for deep neural transformer embeddings (`BAAI/bge-small-en-v1.5`) running 100% on-device on CPU/NPU.
 
 ---
 

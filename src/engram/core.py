@@ -1,5 +1,4 @@
 from pathlib import Path
-import sqlite3
 import os
 import threading
 import sys
@@ -7,16 +6,38 @@ import math
 from typing import Dict, Any, Optional
 from concurrent.futures import ThreadPoolExecutor
 
+# Linux wheels ship pysqlite3-binary because the stdlib sqlite often cannot
+# load extensions (sqlite-vec) or lacks a current FTS5. Use it when present.
+try:
+    import pysqlite3 as sqlite3
+except ImportError:
+    import sqlite3
+
 DB_PATH = os.path.join(os.path.expanduser("~"), ".engram", "engram_v3.db")
 _INITIALIZED_PATHS = set()
 
 def check_storage_liveness(path: str, timeout_seconds: float = 1.0) -> bool:
-    target_dir = os.path.dirname(path)
-    if not os.path.exists(target_dir):
+    """Stat the nearest existing ancestor of `path` without blocking forever.
+
+    The probe runs on a worker thread. Calling exists/stat on the caller
+    thread defeats the timeout when a parent mount is unresponsive.
+    """
+    target_dir = os.path.dirname(os.path.abspath(path)) or os.sep
+
+    def probe() -> bool:
+        current = target_dir
+        seen = set()
+        while current and current not in seen and not os.path.exists(current):
+            seen.add(current)
+            parent = os.path.dirname(current)
+            if not parent or parent == current:
+                return True
+            current = parent
+        os.stat(current or os.curdir)
         return True
-        
+
     executor = ThreadPoolExecutor(max_workers=1)
-    future = executor.submit(os.stat, target_dir)
+    future = executor.submit(probe)
     try:
         future.result(timeout=timeout_seconds)
         return True
@@ -24,6 +45,18 @@ def check_storage_liveness(path: str, timeout_seconds: float = 1.0) -> bool:
         return False
     finally:
         executor.shutdown(wait=False, cancel_futures=True)
+
+
+def _harden_db_permissions(db_path: Path) -> None:
+    """Keep the database and its WAL sidecars owner-readable only."""
+    if os.name != "posix":
+        return
+    for candidate in (db_path, Path(str(db_path) + "-wal"), Path(str(db_path) + "-shm")):
+        if candidate.exists():
+            try:
+                os.chmod(candidate, 0o600)
+            except OSError:
+                pass
 
 def init_db(target_path_str: Optional[str] = None, force: bool = False):
     if target_path_str is None:
@@ -36,15 +69,28 @@ def init_db(target_path_str: Optional[str] = None, force: bool = False):
     
     if not check_storage_liveness(target_path_str):
         raise IOError(f"Storage path {target_path.parent} is unresponsive.")
-        
-    target_path.parent.mkdir(parents=True, exist_ok=True)
-    
+
     old_umask = None
     has_umask = hasattr(os, "umask")
     if has_umask:
         old_umask = os.umask(0o077)
 
     try:
+        parent_existed = target_path.parent.exists()
+        target_path.parent.mkdir(parents=True, exist_ok=True)
+        if os.name == "posix":
+            try:
+                # Only tighten a directory this process just created, plus the
+                # default data directory. Never chmod an arbitrary parent such
+                # as /tmp when ENGRAM_DB_PATH points at a file inside it.
+                if not parent_existed:
+                    os.chmod(target_path.parent, 0o700)
+                default_dir = Path(DB_PATH).expanduser()
+                if target_path.parent.resolve() == default_dir.resolve():
+                    os.chmod(target_path.parent, 0o700)
+            except OSError:
+                pass
+
         conn = sqlite3.connect(target_path_str, timeout=30.0)
         try:
             conn.execute("PRAGMA journal_mode = WAL;")
@@ -126,6 +172,7 @@ def init_db(target_path_str: Optional[str] = None, force: bool = False):
             raise e
         finally:
             conn.close()
+        _harden_db_permissions(target_path)
     finally:
         if has_umask and old_umask is not None:
             os.umask(old_umask)
@@ -188,6 +235,7 @@ def get_db(force_new: bool = False):
     if force_new:
         conn = sqlite3.connect(target_path_str, timeout=30.0)
         _configure_connection(conn)
+        _harden_db_permissions(target_path)
         return conn
 
     if not hasattr(_THREAD_LOCAL, "conns"):
@@ -197,15 +245,21 @@ def get_db(force_new: bool = False):
     if raw_conn is None:
         raw_conn = sqlite3.connect(target_path_str, timeout=30.0)
         _configure_connection(raw_conn)
+        _harden_db_permissions(target_path)
         _THREAD_LOCAL.conns[target_path_str] = raw_conn
 
     return PooledConnection(raw_conn, target_path_str)
 
 def close_thread_connections():
+    """Close sqlite connections cached on this thread.
+
+    The cache stores raw connections. Calling the pool wrapper's close_raw()
+    left those connections open and leaked file descriptors.
+    """
     if hasattr(_THREAD_LOCAL, "conns"):
-        for path_str, conn in list(_THREAD_LOCAL.conns.items()):
+        for conn in list(_THREAD_LOCAL.conns.values()):
             try:
-                conn.close_raw()
+                conn.close()
             except Exception:
                 pass
         _THREAD_LOCAL.conns.clear()

@@ -29,6 +29,8 @@ def chunk_markdown(text: str, chunk_size_words: int = 150, overlap_words: int = 
         return [text.strip()]
 
     chunks = []
+    chunk_size_words = max(1, int(chunk_size_words))
+    overlap_words = max(0, min(int(overlap_words), chunk_size_words - 1))
     step = chunk_size_words - overlap_words
     for i in range(0, len(words), step):
         chunk = " ".join(words[i : i + chunk_size_words])
@@ -42,21 +44,30 @@ def extract_metadata_and_links(content: str) -> Tuple[List[str], List[str]]:
     tags = [m.strip() for m in TAG_REGEX.findall(content)]
     return list(set(wikilinks)), list(set(tags))
 
+def _like_escape(value: str) -> str:
+    """Escape LIKE wildcards so titles match literally under ESCAPE '\\'."""
+    return value.replace("\\", r"\\").replace("%", r"\%").replace("_", r"\_")
+
+
+def _delete_obsidian_document(conn, doc_title: str, project: str) -> None:
+    """Remove previously ingested chunks and edges for one vault note."""
+    doc_title_clean = _like_escape(doc_title)
+    conn.execute(
+        "DELETE FROM nodes WHERE category = 'obsidian' AND content LIKE ? ESCAPE '\\' AND project = ?",
+        (f"[{doc_title_clean} (part%", project),
+    )
+    conn.execute(
+        "DELETE FROM edges WHERE (source = ? OR target = ?) AND project = ?",
+        (doc_title, doc_title, project),
+    )
+
+
 def delete_obsidian_file_nodes(doc_title: str, project: str = "default"):
     """Delete previously ingested chunks and edges for a specific document to avoid duplicates."""
     conn = get_db()
     conn.execute("BEGIN IMMEDIATE;")
     try:
-        # FIX BUG 13/23: escape % and _ in doc_title
-        doc_title_clean = doc_title.replace('\\', r'\\').replace('%', r'\%').replace('_', r'\_')
-        conn.execute(
-            "DELETE FROM nodes WHERE category = 'obsidian' AND content LIKE ? ESCAPE '\' AND project = ?",
-            (f"[{doc_title_clean} (part%", project),
-        )
-        conn.execute(
-            "DELETE FROM edges WHERE (source = ? OR target = ?) AND project = ?",
-            (doc_title, doc_title, project),
-        )
+        _delete_obsidian_document(conn, doc_title, project)
         conn.commit()
     except Exception as e:
         conn.rollback()
@@ -152,16 +163,7 @@ def ingest_obsidian_vault(vault_path_str: str, project: str = "default") -> Dict
     conn.execute("BEGIN IMMEDIATE;")
     try:
         for file_path in md_files:
-            doc_title = file_path.stem
-            doc_title_clean = doc_title.replace('\\', r'\\').replace('%', r'\%').replace('_', r'\_')
-            conn.execute(
-                "DELETE FROM nodes WHERE category = 'obsidian' AND content LIKE ? ESCAPE '\\' AND project = ?",
-                (f"[{doc_title_clean} (part%", project),
-            )
-            conn.execute(
-                "DELETE FROM edges WHERE (source = ? OR target = ?) AND project = ?",
-                (doc_title, doc_title, project),
-            )
+            _delete_obsidian_document(conn, file_path.stem, project)
         conn.commit()
     except Exception as e:
         conn.rollback()

@@ -63,8 +63,8 @@ def cmd_doctor():
         print(f"• Embedding Backend       : ✅ BAAI/bge-small-en-v1.5 (Neural ONNX Semantic Engine)")
     else:
         print(f"• Embedding Backend       : ⚠️ Hashed Hypersphere Projection (Zero-Dependency Fallback)")
-        print(f"  💡 To enable deep neural semantic synonym recall, run:")
-        print(f"     pip install 'engram[local]' or pip install fastembed")
+        print(f"  💡 Neural recall uses the bundled fastembed model (BAAI/bge-small-en-v1.5).")
+        print(f"     If it failed to load, reinstall with: pip install 'episodai[all]'")
 
     if has_vec:
         print(f"• Vector Indexing Engine  : ✅ Native sqlite-vec (vec0 ANN Virtual Table, 5M+ scale)")
@@ -165,6 +165,7 @@ def cmd_import(file_path: str, project: str = None):
     edges = data.get("edges", []) if isinstance(data, dict) else []
 
     imported_nodes = 0
+    id_map = {}
     for n in nodes:
         content = n.get("content", "")
         cat = n.get("category", "general")
@@ -174,13 +175,19 @@ def cmd_import(file_path: str, project: str = None):
             imp = 5
         proj = project if project is not None else n.get("project", "default")
         agent = n.get("agent", "system")
-        save_memory(content, category=cat, importance=imp, project=proj, agent=agent)
+        saved = save_memory(content, category=cat, importance=imp, project=proj, agent=agent)
+        new_id = ""
+        if saved.startswith("Saved Node "):
+            new_id = saved.split("Saved Node ", 1)[1].split(" ", 1)[0]
+        old_id = n.get("id")
+        if old_id and new_id:
+            id_map[str(old_id)] = new_id
         imported_nodes += 1
 
     imported_edges = 0
     for e in edges:
-        s = e.get("source", "")
-        t = e.get("target", "")
+        s = id_map.get(str(e.get("source", "")), e.get("source", ""))
+        t = id_map.get(str(e.get("target", "")), e.get("target", ""))
         r = e.get("relation", "connects_to")
         try:
             w = float(e.get("weight", 1.0))
@@ -305,7 +312,11 @@ def main():
 
     p_imp = subparsers.add_parser("import", help="Import memory JSON file")
     p_imp.add_argument("file", help="Source JSON filepath")
-    p_imp.add_argument("--project", default="default", help="Project namespace")
+    p_imp.add_argument(
+        "--project",
+        default=None,
+        help="Override the project on every imported record (default: keep the project stored in the file)",
+    )
 
     # Graph
     p_graph = subparsers.add_parser("graph", help="Save a knowledge graph relation")
@@ -361,7 +372,11 @@ def main():
 
     # Serve (HTTP & OpenAPI Gateway for Web Agents)
     p_serve = subparsers.add_parser("serve", help="Start HTTP & OpenAPI Gateway for Web Agents (ChatGPT, Claude, Gemini)")
-    p_serve.add_argument("--host", default="0.0.0.0", help="Host address")
+    p_serve.add_argument(
+        "--host",
+        default="127.0.0.1",
+        help="Host address. Addresses other than loopback require ENGRAM_API_KEY.",
+    )
     p_serve.add_argument("--port", type=int, default=8000, help="Port number")
 
     # TUI

@@ -1,4 +1,3 @@
-import os
 """
 Engram Alpha MCP Server (Production-Grade Architecture)
 Features:
@@ -10,10 +9,12 @@ Features:
 - Multi-Transport Support (Stdio & SSE / HTTP).
 """
 
+import os
 import sys
 import math
 import uuid
 import re
+import xml.sax.saxutils
 from datetime import datetime, timezone
 from typing import Optional, List, Dict, Any, Tuple
 
@@ -74,6 +75,36 @@ def escape_fts(text: str) -> str:
 def _normalize_project(project: Optional[str]) -> Optional[str]:
     """FIX BUG 42: normalize empty string project to None throughout all tools."""
     return None if project == "" else project
+
+
+def _xml_text(value: Any) -> str:
+    """Escape text placed in the auto-context XML document."""
+    return xml.sax.saxutils.escape(str(value), {'"': "&quot;", "'": "&apos;"})
+
+
+def _retention_multiplier(days_old: float) -> float:
+    """ACT-R power-law retention from Anderson & Lebiere (1998).
+
+    D(t) = (1 + alpha * days) ** -beta, with alpha=0.1 and beta=0.5.
+    ENGRAM_DECAY_LAMBDA, when set explicitly, selects the older exponential
+    curve so an existing override keeps working.
+    """
+    days = max(0.0, float(days_old))
+    if "ENGRAM_DECAY_LAMBDA" in os.environ:
+        try:
+            lam = float(os.environ["ENGRAM_DECAY_LAMBDA"])
+        except (TypeError, ValueError):
+            lam = 0.05
+        return math.exp(-lam * days)
+    try:
+        alpha = float(os.environ.get("ENGRAM_DECAY_ALPHA", "0.1"))
+    except (TypeError, ValueError):
+        alpha = 0.1
+    try:
+        beta = float(os.environ.get("ENGRAM_DECAY_BETA", "0.5"))
+    except (TypeError, ValueError):
+        beta = 0.5
+    return (1.0 + max(0.0, alpha) * days) ** (-max(0.0, beta))
 
 @retry_db_lock(max_retries=7)
 def _save_node(
@@ -341,7 +372,8 @@ def search_memory(
 
             rrf_score = (1.2 / (k_rrf + r_dense)) + (1.0 / (k_rrf + r_lex)) + g_boost
 
-            # ACT-R Power-Law Decay
+            # ACT-R power-law retention. A later access (spaced practice) moves
+            # the reference time forward via last_accessed_at.
             ref_date_str = last_accessed_at if last_accessed_at else created_at
             try:
                 ref_dt = datetime.fromisoformat(ref_date_str.replace("Z", "+00:00"))
@@ -349,9 +381,7 @@ def search_memory(
             except Exception:
                 days_old = 0.0
 
-            # Strict Ebbinghaus / ACT-R Exponential Decay (score * exp(-lambda * t))
-            decay_lambda = float(os.environ.get("ENGRAM_DECAY_LAMBDA", "0.05"))
-            decay_multiplier = math.exp(-decay_lambda * days_old)
+            decay_multiplier = _retention_multiplier(days_old)
             importance_weight = 1.0 + (importance - 5) * 0.05
 
             final_score = rrf_score * decay_multiplier * importance_weight
@@ -426,7 +456,7 @@ def extract_and_save_memory(
                 INSERT OR IGNORE INTO edges (source, target, relation, weight, created_at, project)
                 VALUES (?, ?, ?, 1.0, ?, ?)
                 """,
-                (tag.strip(), node_id, "tagged_as", 1.0, now, project),
+                (tag.strip(), node_id, "tagged_as", now, project),
             )
             created_edges.append(f"[{tag.strip()}] -[tagged_as]-> [{node_id[:8]}]")
 
@@ -544,7 +574,7 @@ def query_graph(node: str, depth: int = 2, project: Optional[str] = None, includ
             FROM edges e
             JOIN graph_walk gw ON (e.source = gw.target OR e.target = gw.source)
             WHERE gw.hop < :max_depth
-              AND instr(gw.path, e.target) = 0
+              AND instr('>' || gw.path || '>', '>' || e.target || '>') = 0
               {rec_proj}
               {rec_sup}
         )
@@ -802,8 +832,8 @@ def auto_context(limit: int = 5, min_importance: int = 7, project: Optional[str]
             node_id, cat, content, imp, proj, created = r
             ids_to_bump.append(node_id)
             xml_entries.append(
-                f'  <memory id="{node_id}" category="{cat}" importance="{imp}" project="{proj}">\n'
-                f"    {content}\n"
+                f'  <memory id="{_xml_text(node_id)}" category="{_xml_text(cat)}" importance="{_xml_text(imp)}" project="{_xml_text(proj)}">\n'
+                f"    {_xml_text(content)}\n"
                 f"  </memory>"
             )
 
@@ -892,11 +922,12 @@ def delete_memory(id: str) -> str:
 def list_memories(limit: int = 50, project: Optional[str] = None) -> str:
     """List recent memory nodes in the database, ordered by importance and recency."""
     project = _normalize_project(project)  # FIX BUG 42
+    limit_clamped = max(1, min(1000, int(limit)))
     conn = get_db()
     try:
         proj_filter = "WHERE project = ?" if project else ""
         params = [project] if project else []
-        params.append(limit)
+        params.append(limit_clamped)
 
         rows = conn.execute(
             f"""

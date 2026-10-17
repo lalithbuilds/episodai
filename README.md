@@ -317,9 +317,9 @@ Built-in HTTP & Server-Sent Events (SSE) gateway compliant with OpenAPI 3.0. All
 
 | Installation Command | Dependencies | Embedding Backend | Vector Engine | Use Case |
 | :--- | :--- | :--- | :--- | :--- |
-| **`pip install -e ".[all]"`** *(Recommended)* | `fastembed`, `sqlite-vec`, `numpy` | **Neural ONNX** (`bge-small-en-v1.5`) | **Native `sqlite-vec` ANN (`vec0`)** | Full semantic synonym recall + 5M+ node scaling |
-| **`pip install -e ".[local]"`** | `fastembed`, `sqlite-vec`, `numpy` | **Neural ONNX** (`bge-small-en-v1.5`) | **Native `sqlite-vec` ANN (`vec0`)** | Linux & Windows local acceleration |
-| **`pip install -e .`** *(Base/Minimal)* | Pure Stdlib (`mcp` only) | **Hashed Hypersphere Projection** | **AMX / BLAS Exact Matrix Scan** | Zero-dependency environments, air-gapped Docker |
+| **`pip install -e ".[all]"`** *(Recommended)* | `fastembed`, `sqlite-vec`, `numpy`, `onnxruntime` | **Neural ONNX** (`bge-small-en-v1.5`) | **Native `sqlite-vec` ANN (`vec0`)** | Full semantic synonym recall + large vaults |
+| **`pip install -e ".[local]"`** | Same as `[all]` (documented alias) | **Neural ONNX** (`bge-small-en-v1.5`) | **Native `sqlite-vec` ANN (`vec0`)** | Same stack as `[all]` |
+| **`pip install -e .`** | Same runtime dependencies as `[all]` | **Neural ONNX**, with a hashed fallback if the model cannot load | **`sqlite-vec` when the extension loads** | Normal install. There is no separate stdlib-only extra. |
 
 ---
 
@@ -390,6 +390,11 @@ episoda stats
 
 #### Universal HTTP & OpenAPI Gateway
 ```bash
+# Loopback only. A non-loopback bind requires ENGRAM_API_KEY.
+episoda serve --port 8000
+
+# Expose beyond localhost only with a bearer token:
+export ENGRAM_API_KEY="your-secret-sovereign-key"
 episoda serve --host 0.0.0.0 --port 8000
 ```
 
@@ -538,8 +543,11 @@ Episodai is validated using two benchmark suites:
 | Environment Variable | Default Value | Description |
 | :--- | :--- | :--- |
 | `ENGRAM_DB_PATH` | `~/.engram/engram_v3.db` | Absolute filesystem path for the SQLite WAL database. |
-| `ENGRAM_API_KEY` | *(None / Open Localhost)* | Bearer token to protect HTTP / OpenAPI endpoints when exposed. |
+| `ENGRAM_API_KEY` | *(unset, loopback only)* | Bearer token. Required before `serve` will listen on anything other than loopback. |
 | `ENGRAM_ALLOWED_ORIGIN` | `*` | Custom CORS allowed origin header for web agents. |
+| `ENGRAM_DECAY_ALPHA` | `0.1` | ACT-R power-law time coefficient. |
+| `ENGRAM_DECAY_BETA` | `0.5` | ACT-R power-law exponent. |
+| `ENGRAM_DECAY_LAMBDA` | *(unset)* | If set, use exponential decay `exp(-lambda * days)` instead of the power law. |
 
 ---
 

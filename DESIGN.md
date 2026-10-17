@@ -383,7 +383,7 @@ The primary interface for local desktop AI assistants (Anthropic Claude Desktop,
 
 For headless web agents, multi-agent cloud swarms, ChatGPT Custom Actions, and Google Gemini Extensions, `src/engram/http_bridge.py` provides an embedded HTTP server:
 
-* **Default Port:** `8000` (Configurable via CLI `engram http --port <PORT>`).
+* **Default Port:** `8000` (Configurable via CLI `episoda serve --port <PORT>`). The default bind address is `127.0.0.1`. Listening on another address requires `ENGRAM_API_KEY`.
 * **Authentication:** Enforces Bearer Token validation via `ENGRAM_API_KEY` header (`Authorization: Bearer <KEY>`).
 * **CORS Management:** Configurable origin matching via `ENGRAM_ALLOWED_ORIGIN`.
 

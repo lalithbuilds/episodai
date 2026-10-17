@@ -154,6 +154,9 @@ def test_http_dashboard_endpoint():
         assert "<!DOCTYPE html>" in html
         assert "Engram Alpha Cognitive Dashboard" in html
         assert "Force-Directed" in html or "Semantic Memory Recall" in html
+        assert "innerHTML" not in html
+        assert "textContent" in html
+        assert "api-token" in html
 
 def test_http_bearer_auth(monkeypatch):
     monkeypatch.setenv("ENGRAM_API_KEY", "secret_test_token_123")
@@ -173,4 +176,23 @@ def test_http_bearer_auth(monkeypatch):
     )
     with urllib.request.urlopen(req_auth) as resp:
         assert resp.status == 200
+
+    # Scheme comparison is case-insensitive, and a wrong token is rejected
+    # without turning into a 500 from the digest helper.
+    req_lower = urllib.request.Request(
+        f"{BASE_URL}/search?q=test",
+        headers={"Authorization": "bearer secret_test_token_123"},
+    )
+    with urllib.request.urlopen(req_lower) as resp:
+        assert resp.status == 200
+
+    try:
+        req_bad = urllib.request.Request(
+            f"{BASE_URL}/search?q=test",
+            headers={"Authorization": "Bearer no"},
+        )
+        urllib.request.urlopen(req_bad)
+        assert False, "Wrong token should be rejected"
+    except urllib.error.HTTPError as e:
+        assert e.code == 401
 
